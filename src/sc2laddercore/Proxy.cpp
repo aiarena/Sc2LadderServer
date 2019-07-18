@@ -380,7 +380,7 @@ void Proxy::gameUpdate()
         {
             const uint32_t maxStepTime = getMaxStepTime();  // ms
             const auto timeSinceLastResponse = std::chrono::duration_cast<std::chrono::milliseconds>(clock::now() - m_lastResponseSendTime).count();
-            if (!m_botConfig.Debug && !m_realTimeMode && maxStepTime && timeSinceLastResponse > static_cast<int>(maxStepTime))
+            if (/*!m_botConfig.Debug &&*/ !m_realTimeMode && maxStepTime && timeSinceLastResponse > static_cast<int>(maxStepTime))//Removed debug check for timeouts: 2018-07-18
             {
                 PrintThread{} << m_botConfig.BotName << " : bot is too slow. " << timeSinceLastResponse << " milliseconds passed. Max step time: " << static_cast<int>(maxStepTime) << " milliseconds." << std::endl;
                 // ToDo: Make a chat announcement
@@ -624,7 +624,7 @@ uint32_t Proxy::getMaxStepTime() const
 {
     if (m_currentGameLoop)
     {
-        return 20000U;  // ToDo: Add this to config file.
+        return 3000U;  // ToDo: Add this to config file. //Changed to 3000ms (3 seconds) 2018-07-18
     }
     return 0U;
 }
