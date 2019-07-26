@@ -170,8 +170,6 @@ void LadderManager::SaveJsonResult(const BotConfig &Bot1, const BotConfig &Bot2,
 	NewResult.AddMember("Result", GetResultType(Result.Result), alloc);
 	NewResult.AddMember("GameTime", Result.GameLoop, alloc);
 	NewResult.AddMember("TimeStamp", Result.TimeStamp, alloc);
-    NewResult.AddMember("Bot1AvgFrame", std::to_string(Result.Bot1AvgFrame), alloc);
-    NewResult.AddMember("Bot2AvgFrame", std::to_string(Result.Bot2AvgFrame), alloc);
 	ResultsArray.PushBack(NewResult, alloc);
 	ResultsDoc.AddMember("Results", ResultsArray, alloc);
 	std::ofstream ofs(ResultsLogFile.c_str());
