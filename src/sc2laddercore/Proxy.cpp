@@ -624,7 +624,7 @@ uint32_t Proxy::getMaxStepTime() const
 {
     if (m_currentGameLoop)
     {
-        return 3000U;  // ToDo: Add this to config file. //Changed to 3000ms (3 seconds) 2018-07-18
+        return 2000U;  // ToDo: Add this to config file. //Changed to 2000ms (2 seconds) 2018-07-26
     }
     return 0U;
 }

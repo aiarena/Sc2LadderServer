@@ -18,6 +18,7 @@ public:
     bool LoadSetup();
 	void SaveJsonResult(const BotConfig & Bot1, const BotConfig & Bot2, const std::string & Map, GameResult Result);
 	void RunLadderManager();
+    void CreatePIDFile();
 
     void LogNetworkFailiure(const std::string &Agent1, const std::string &Action);
 

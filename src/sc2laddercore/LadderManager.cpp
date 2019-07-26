@@ -77,10 +77,24 @@ LadderManager::LadderManager(int InCoordinatorArgc, char** inCoordinatorArgv, co
 {
 }
 
+void LadderManager::CreatePIDFile()
+{
+    FILE *pFile;
+    pFile = fopen("laddermanager.pid","w");
+
+    #ifdef _WIN32
+    fprintf(pFile, "%d", GetCurrentProcessId());
+    fclose(pFile);
+    #else
+    fprintf(pFile, "%d", ::getpid());
+    fclose(pFile);
+    #endif
+}
 
 
 bool LadderManager::LoadSetup()
 {
+    CreatePIDFile();
 	delete Config;
 	Config = new LadderConfig(ConfigFile);
 	if (!Config->ParseConfig())
