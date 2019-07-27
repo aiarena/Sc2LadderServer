@@ -46,6 +46,7 @@
 #include "dirent.h"
 #else
 #include <dirent.h>
+#include <unistd.h> 
 #endif
 
 std::mutex PrintThread::_mutexPrint{};
@@ -86,7 +87,7 @@ void LadderManager::CreatePIDFile()
     fprintf(pFile, "%d", GetCurrentProcessId());
     fclose(pFile);
     #else
-    fprintf(pFile, "%d", ::getpid());
+    fprintf(pFile, "%d", std::getpid());
     fclose(pFile);
     #endif
 }
