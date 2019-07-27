@@ -87,7 +87,7 @@ void LadderManager::CreatePIDFile()
     fprintf(pFile, "%d", GetCurrentProcessId());
     fclose(pFile);
     #else
-    fprintf(pFile, "%d", std::getpid());
+    fprintf(pFile, "%d", ::getpid());
     fclose(pFile);
     #endif
 }
