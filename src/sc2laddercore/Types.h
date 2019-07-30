@@ -453,11 +453,19 @@ static ResultType getEndResultFromProxyResults(const ExitCase resultBot1, const 
     {
         return ResultType::Player2Crash;
     }
-    if (resultBot1 == ExitCase::GameEndVictory && (resultBot2 == ExitCase::GameEndDefeat || resultBot2 == ExitCase::BotStepTimeout || resultBot2 == ExitCase::Error))
+    if (resultBot1 == ExitCase::BotStepTimeout)//Added by Daniel van Schoor to return a timeout result instead of a win for the other bot 2019-07-30
+    {
+        return ResultType::Player1TimeOut;
+    }
+    if (resultBot2 == ExitCase::BotStepTimeout)//Added by Daniel van Schoor to return a timeout result instead of a win for the other bot 2019-07-30
+    {
+        return ResultType::Player2TimeOut;
+    }
+    if (resultBot1 == ExitCase::GameEndVictory && (resultBot2 == ExitCase::GameEndDefeat /*|| resultBot2 == ExitCase::BotStepTimeout */|| resultBot2 == ExitCase::Error))//Commented out timeout 2019-07-30 
     {
         return  ResultType::Player1Win;
     }
-    if (resultBot2 == ExitCase::GameEndVictory && (resultBot1 == ExitCase::GameEndDefeat || resultBot1 == ExitCase::BotStepTimeout || resultBot1 == ExitCase::Error))
+    if (resultBot2 == ExitCase::GameEndVictory && (resultBot1 == ExitCase::GameEndDefeat /*|| resultBot1 == ExitCase::BotStepTimeout */|| resultBot1 == ExitCase::Error))//Commented out timeout 2019-07-30
     {
         return  ResultType::Player2Win;
     }
