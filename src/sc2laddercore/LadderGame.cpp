@@ -137,7 +137,7 @@ GameResult LadderGame::StartGame(const BotConfig &Agent1, const BotConfig &Agent
     {
         PrintThread{} << "Saving replay failed." << std::endl;
     }
-    //ChangeBotNames(replayFile, Agent1.BotName, Agent2.BotName); Commented out to see if resolves corrupt replays 2019-07-30
+    ChangeBotNames(replayFile, Agent1.BotName, Agent2.BotName); //Commented out to see if resolves corrupt replays 2019-07-30 //Reverted on 2019-07-31 as it broke replays
 
     GameResult Result;
     const auto resultBot1 = proxyBot1.getResult();
