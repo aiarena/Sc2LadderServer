@@ -72,7 +72,6 @@ $ mkdir build && cd build
 # Generate a Makefile.
 # Use 'cmake -DCMAKE_BUILD_TYPE=Debug ../' if debuginfo is needed
 $ cmake ../
-
 # Build.
 $ make
 ```
