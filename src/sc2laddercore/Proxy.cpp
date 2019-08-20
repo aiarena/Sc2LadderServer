@@ -463,6 +463,8 @@ void Proxy::gameUpdate()
         }
     }
     m_stats.avgLoopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(m_totalTime).count()/static_cast<float>(m_currentGameLoop);
+    if (isnan(m_stats.avgLoopDuration))
+        m_stats.avgLoopDuration = 0.00f;
     m_stats.gameLoops = m_currentGameLoop;
     PrintThread{} << m_botConfig.BotName << " : Exiting with " << GetExitCaseString(m_result) << " Average step time " << m_stats.avgLoopDuration << " microseconds, total time: " << std::chrono::duration_cast<std::chrono::seconds>(m_totalTime).count() << " seconds, game loops: " << m_currentGameLoop << std::endl;
 }
@@ -648,6 +650,7 @@ bool Proxy::saveReplay(const std::string& replayFile)
     }
     PrintThread{} << m_botConfig.BotName << " : Saving replay." << std::endl;
     sc2::ProtoInterface proto;
+
     sc2::GameRequestPtr request = proto.MakeRequest();
     request->mutable_save_replay();
     m_client.Send(request.get());
@@ -674,7 +677,7 @@ bool Proxy::saveReplay(const std::string& replayFile)
         return false;
     }
 
-    file.write(&replay.data()[0], static_cast<std::streamsize>(replay.data().size()));
+    file.write(&replay.data()[0], replay.data().size());
     return true;
 }
 
