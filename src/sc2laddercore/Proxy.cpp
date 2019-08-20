@@ -463,7 +463,7 @@ void Proxy::gameUpdate()
         }
     }
     m_stats.avgLoopDuration = std::chrono::duration_cast<std::chrono::milliseconds>(m_totalTime).count()/static_cast<float>(m_currentGameLoop);
-    if (isnan(m_stats.avgLoopDuration))
+    if (std::isnan(m_stats.avgLoopDuration))
         m_stats.avgLoopDuration = 0.00f;
     m_stats.gameLoops = m_currentGameLoop;
     PrintThread{} << m_botConfig.BotName << " : Exiting with " << GetExitCaseString(m_result) << " Average step time " << m_stats.avgLoopDuration << " microseconds, total time: " << std::chrono::duration_cast<std::chrono::seconds>(m_totalTime).count() << " seconds, game loops: " << m_currentGameLoop << std::endl;
