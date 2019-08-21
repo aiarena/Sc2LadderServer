@@ -42,6 +42,8 @@ LadderGame::LadderGame(int InCoordinatorArgc, char** InCoordinatorArgv, LadderCo
 {
     const int maxGameTimeInt = Config->GetIntValue("MaxGameTime");
     MaxGameTime = maxGameTimeInt > 0 ? static_cast<uint32_t>(maxGameTimeInt) : 0;
+    const int maxFrameTimeInt = Config->GetIntValue("MaxFrameTime");
+    MaxFrameTime = maxFrameTimeInt > 0 ? static_cast<uint32_t>(maxFrameTimeInt) : 0;
     const int MaxRealGameTimeInt = Config->GetIntValue("MaxRealGameTime");
     MaxRealGameTime = MaxRealGameTimeInt > 0 ? static_cast<uint32_t>(MaxRealGameTimeInt) : 0;
     RealTime = Config->GetBoolValue("RealTimeMode");
@@ -67,8 +69,8 @@ GameResult LadderGame::StartGame(const BotConfig &Agent1, const BotConfig &Agent
 {
     LogStartGame(Agent1, Agent2);
     // Proxy init
-    Proxy proxyBot1(MaxGameTime, MaxRealGameTime, Agent1);
-    Proxy proxyBot2(MaxGameTime, MaxRealGameTime, Agent2);
+    Proxy proxyBot1(MaxGameTime, MaxRealGameTime, Agent1, MaxFrameTime);
+    Proxy proxyBot2(MaxGameTime, MaxRealGameTime, Agent2, MaxFrameTime);
 
     // Start the SC2 instances
     sc2::ProcessSettings process_settings;
@@ -78,37 +80,37 @@ GameResult LadderGame::StartGame(const BotConfig &Agent1, const BotConfig &Agent
     constexpr int portServerBot2 = 5678;
     constexpr int portClientBot1 = 5679;
     constexpr int portClientBot2 = 5680;
-    PrintThread {} << "Starting the StarCraft II clients." << std::endl;
+    PrintThread{} << "Starting the StarCraft II clients." << std::endl;
     proxyBot1.startSC2Instance(process_settings, portServerBot1, portClientBot1);
     proxyBot2.startSC2Instance(process_settings, portServerBot2, portClientBot2);
     const bool startSC2InstanceSuccessful1 = proxyBot1.ConnectToSC2Instance(process_settings, portServerBot1, portClientBot1);
     const bool startSC2InstanceSuccessful2 = proxyBot2.ConnectToSC2Instance(process_settings, portServerBot2, portClientBot2);
     if (!startSC2InstanceSuccessful1 || !startSC2InstanceSuccessful2)
     {
-        PrintThread {} << "Failed to start the StarCraft II clients." << std::endl;
+        PrintThread{} << "Failed to start the StarCraft II clients." << std::endl;
         return GameResult();
     }
     // Setup map
-    PrintThread {} << "Creating the game on " << Map << "." << std::endl;
+    PrintThread{} << "Creating the game on " << Map << "." << std::endl;
     const bool setupGameSuccessful1 = proxyBot1.setupGame(process_settings, Map, RealTime, Agent1.Race, Agent2.Race);
     const bool setupGameSuccessful2 = proxyBot2.setupGame(process_settings, Map, RealTime, Agent1.Race, Agent2.Race);
     if (!setupGameSuccessful1 || !setupGameSuccessful2)
     {
-        PrintThread {} << "Failed to create the game." << std::endl;
+        PrintThread{} << "Failed to create the game." << std::endl;
         return GameResult();
     }
 
     // Start the bots
-    PrintThread {} << "Starting the bots " << Agent1.BotName << " and " << Agent2.BotName << "." << std::endl;
+    PrintThread{} << "Starting the bots " << Agent1.BotName << " and " << Agent2.BotName << "." << std::endl;
     const bool startBotSuccessful1 = proxyBot1.startBot(portServerBot1, PORT_START, Agent2.PlayerId);
     const bool startBotSuccessful2 = proxyBot2.startBot(portServerBot2, PORT_START, Agent1.PlayerId);
     if (!startBotSuccessful1)
     {
-        PrintThread {} << "Failed to start " << Agent1.BotName << "." << std::endl;
+        PrintThread{} << "Failed to start " << Agent1.BotName << "." << std::endl;
     }
     if (!startBotSuccessful2)
     {
-        PrintThread {} << "Failed to start " << Agent2.BotName << "." << std::endl;
+        PrintThread{} << "Failed to start " << Agent2.BotName << "." << std::endl;
     }
     if (!startBotSuccessful1 || !startBotSuccessful2)
     {
@@ -116,7 +118,7 @@ GameResult LadderGame::StartGame(const BotConfig &Agent1, const BotConfig &Agent
     }
 
     // Start the match
-    PrintThread {} << "Starting the match." << std::endl;
+    PrintThread{} << "Starting the match." << std::endl;
     proxyBot1.startGame();
     proxyBot2.startGame();
 
@@ -152,7 +154,7 @@ GameResult LadderGame::StartGame(const BotConfig &Agent1, const BotConfig &Agent
     std::time_t t = std::time(nullptr);
     std::tm tm = *std::gmtime(&t);
     std::ostringstream oss;
-    oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S") <<"UTC";
+    oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S") << "UTC";
     Result.TimeStamp = oss.str();
     return Result;
 }
