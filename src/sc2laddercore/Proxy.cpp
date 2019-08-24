@@ -616,7 +616,6 @@ uint32_t Proxy::getMaxStepTime() const
 {
     if (m_currentGameLoop)
     {
-        PrintThread{} << "Max frame time:" << m_maxFrameTime << std::endl;
         return m_maxFrameTime;
     }
     return 0U;
