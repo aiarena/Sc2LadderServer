@@ -1,8 +1,12 @@
 image: gcc
 
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  
 build:
   stage: build
   before_script:
+    - git submodule sync --recursive
     - apt-get update -qq
     - apt-get install -qq make cmake
   script:
