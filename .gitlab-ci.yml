@@ -7,7 +7,7 @@ build:
   stage: build
   before_script:
     - apt-get update -qq
-    - apt-get install -qq git make cmake gcc-8
+    - apt-get install -qq git make cmake gcc-8 build-essential g++
     - git submodule sync --recursive
   script:
     - mkdir build && cd build && cmake ../ && make
