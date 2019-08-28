@@ -1,0 +1,12 @@
+image: gcc
+
+build:
+  stage: build
+  before_script:
+    - apt-get update -qq
+    - apt-get install -qq make cmake
+  script:
+    - mkdir build && cd build && cmake ../ && make
+  artifacts:
+    paths:
+      - SC2LadderServer
